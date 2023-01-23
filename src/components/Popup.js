@@ -29,10 +29,6 @@ export function Popup() {
         setItems(data.items);
     };
 
-    const getMessages = () => {
-        chrome.runtime.sendMessage({ type: 'requestMessages' }, updateData);
-    };
-
     const updatePersist = (event) => {
         chrome.runtime.sendMessage({ type: 'setPersist', value: event.target.checked }, updateData);
     };
@@ -68,10 +64,6 @@ export function Popup() {
 
             setLoading(false);
         });
-
-        const checkEvents = setInterval(getMessages, 1000);
-
-        return () => clearInterval(checkEvents);
     }, []);
 
     const Content = () => {

@@ -10,8 +10,6 @@ export function Listeners() {
     const rows = context.getEvents('listener', 100);
 
     const fixRow = ({ stack, date }) => {
-        console.log('sass', location.origin);
-
         stack = stack.replace(new RegExp(`\\(${ location.origin }(.*)\\)`), '');
 
         try {
