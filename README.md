@@ -10,6 +10,7 @@ This extension checks some points on the site:
 <img src="screenshots/popup.png" alt="screenshot">
 
 ## Run locally
+#### Requirement: [Node.js](https://nodejs.org/en/) 
 1. `git clone git@github.com:gromadchuk/site-check-helper.git`
 2. `cd site-check-helper`
 3. `npm install`
