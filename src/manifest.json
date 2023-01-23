@@ -1,0 +1,50 @@
+{
+  "version": "0.1.0",
+  "name": "Site Check Helper",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "webNavigation",
+    "tabs"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "events.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "content_scripts": [
+    {
+      "world": "MAIN",
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "all_frames": true,
+      "run_at": "document_start"
+    }
+  ],
+  "icons": {
+    "256": "icons/256.png",
+    "128": "icons/128.png",
+    "96": "icons/96.png",
+    "64": "icons/64.png",
+    "48": "icons/48.png",
+    "32": "icons/32.png",
+    "16": "icons/16.png"
+  },
+  "action": {
+    "browser_style": true,
+    "default_title": "No events",
+    "default_popup": "popup.html"
+  },
+  "manifest_version": 3,
+  "update_url": "https://clients2.google.com/service/update2/crx"
+}
