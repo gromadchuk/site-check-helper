@@ -15,4 +15,4 @@ This extension checks some points on the site:
 3. `npm install`
 4. `npm run dev`
 5. Open `chrome://extensions/` and enable `Developer mode`
-6. Click `Load unpacked` and select `site-check-helper/dist` folder
+6. Click `Load unpacked` and select `site-check-helper/build` folder
