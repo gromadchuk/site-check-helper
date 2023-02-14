@@ -11,7 +11,7 @@ This extension checks some points on the site:
 
 ## Run locally
 #### Requirement: [Node.js](https://nodejs.org/en/) 
-1. `git clone git@github.com:gromadchuk/site-check-helper.git`
+1. `git clone https://github.com/gromadchuk/site-check-helper.git`
 2. `cd site-check-helper`
 3. `npm install`
 4. `npm run dev`
