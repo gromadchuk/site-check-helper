@@ -7,6 +7,19 @@ window.addEventListener = function(type, listener, useCapture, wantsUntrusted) {
     if (type === 'message') {
         const event = new CustomEvent(eventName, {
             detail: {
+                type: 'foundListenerMessage',
+                stack: new Error().stack,
+                date: new Date(),
+            }
+        });
+
+        window.dispatchEvent(event);
+    }
+
+    if (type === 'hashchange') {
+        const event = new CustomEvent(eventName, {
+            detail: {
+                type: 'foundListenerHashChange',
                 stack: new Error().stack,
                 date: new Date(),
             }

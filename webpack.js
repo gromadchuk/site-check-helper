@@ -10,7 +10,7 @@ const config = {
     entry: {
         background: path.join(__dirname, './src/background.js'),
         content: path.join(__dirname, './src/content.js'),
-        popup: path.join(__dirname, './src/popup.js'),
+        app: path.join(__dirname, './src/app.js'),
         events: path.join(__dirname, './src/events.js'),
     },
     output: {
@@ -25,9 +25,9 @@ const config = {
             meta: {
                 viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
             },
-            filename: 'popup.html',
-            template: './src/popup.html',
-            chunks: ['popup'],
+            filename: 'app.html',
+            template: './src/app.html',
+            chunks: ['app'],
             hash: true,
         }),
         new CopyPlugin({

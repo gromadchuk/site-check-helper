@@ -6,14 +6,12 @@ import { Prism } from '@mantine/prism';
 
 import { AppContext } from './AppContext';
 
-export function Messages() {
-    const context = useContext(AppContext);
-
+export function Messages({ getEvents, allTabs, selectedTabs, isListenAllTabs }) {
     const [message, setMessage] = useState('');
     const [sendError, setSendError] = useState(null);
     const [isMessageObject, setMessageObject] = useLocalStorage({ key: 'is-message-string', defaultValue: true });
 
-    const rows = context.getEvents('message', 100);
+    const rows = getEvents(['foundListenerMessage', 'eventMessage']);
 
     const getFormattedReadMessage = (value) => {
         if (typeof value === 'object') {
@@ -26,20 +24,59 @@ export function Messages() {
     const sendMessages = () => {
         setSendError(null);
 
-        try {
-            const event = isMessageObject ? JSON.parse(message) : message;
+        const eventTabs = isListenAllTabs
+            ? allTabs.map((tab) => tab.id)
+            : selectedTabs;
 
-            chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-                chrome.tabs.sendMessage(tab.id, event, (response) => {
+        eventTabs.forEach((tabId) => {
+            try {
+                const event = isMessageObject ? JSON.parse(message) : message;
+
+                chrome.tabs.sendMessage(tabId, {
+                    type: 'sendMessage',
+                    event
+                }, (response) => {
                     console.log('sendMessage response:', response);
                 });
-            });
-        } catch (error) {
-            console.log('Error sending message', error);
+            } catch (error) {
+                console.log('Error sending message', error);
 
-            setSendError(error.message);
-        }
+                setSendError(error.message);
+            }
+        });
     };
+
+    const RowEvent = ({ data, origin, date }, key) => (
+        <div key={ key }>
+            <Divider
+                my="xs"
+                label={ [
+                    (new Date(date)).toLocaleTimeString(),
+                    typeof data,
+                    origin
+                ].join(' / ') }
+                labelPosition="center"
+            />
+            <Prism
+                key={ key }
+                language={ typeof data === 'string' ? 'text' : 'json' }
+            >{ getFormattedReadMessage(data) }</Prism>
+        </div>
+    );
+
+    const RowListener = ({ stack, date, origin }, key) => (
+        <div key={ key }>
+            <Divider
+                my="xs"
+                label={ [
+                    (new Date(date)).toLocaleTimeString(),
+                    origin
+                ].join(' / ') }
+                labelPosition="center"
+            />
+            <Prism language="javascript">{ stack }</Prism>
+        </div>
+    );
 
     const MessagesContent = () => {
         if (rows.length === 0) {
@@ -50,23 +87,19 @@ export function Messages() {
             );
         }
 
-        return rows.map(({ data, origin, date }, key) => (
-            <div key={ key }>
-                <Divider
-                    my="xs"
-                    label={ [
-                        (new Date(date)).toLocaleTimeString(),
-                        typeof data,
-                        origin
-                    ].join(' / ') }
-                    labelPosition="center"
-                />
-                <Prism
-                    key={ key }
-                    language={ typeof data === 'string' ? 'text' : 'json' }
-                >{ getFormattedReadMessage(data) }</Prism>
-            </div>
-        ));
+        return rows.map((data, key) => {
+            if (data.type === 'eventMessage') {
+                return RowEvent(data, key);
+            }
+
+            if (data.type === 'foundListenerMessage') {
+                return RowListener(data, key);
+            }
+
+            console.log('unknown event', data);
+
+            return 'unknown event';
+        });
     };
 
     return (

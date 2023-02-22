@@ -1,10 +1,11 @@
 {
-  "version": "0.1.2",
+  "version": "0.2.0",
   "name": "Site Check Helper",
   "background": {
     "service_worker": "background.js"
   },
   "permissions": [
+    "tabs",
     "webNavigation"
   ],
   "web_accessible_resources": [
@@ -39,9 +40,7 @@
     "32": "icons/32.png",
     "16": "icons/16.png"
   },
-  "action": {
-    "default_popup": "popup.html"
-  },
+  "action": {},
   "manifest_version": 3,
   "update_url": "https://clients2.google.com/service/update2/crx"
 }
